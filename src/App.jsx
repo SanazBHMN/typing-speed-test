@@ -5,6 +5,7 @@ import { useStopwatch } from "./hooks/useStopwatch";
 function App() {
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [mode, setMode] = useState("timed");
+  const [difficultyLevel, setDifficultyLevel] = useState("easy");
   const { elapsedSeconds, start } = useStopwatch();
   const intervalRef = useRef(null);
 
@@ -27,10 +28,49 @@ function App() {
     setMode(event.target.value);
   };
 
+  const handleDifficultyLevel = (event) => {
+    setDifficultyLevel(event.target.value);
+  };
+
   return (
     <div>
+      {/* Difficulty level switch */}
+      <div>
+        <p>Difficulty:</p>
+        <label htmlFor="easy">Easy</label>
+        <input
+          type="radio"
+          name=""
+          id="easy"
+          value="easy"
+          checked={difficultyLevel === "easy"}
+          onChange={handleDifficultyLevel}
+        />
+
+        <label htmlFor="medium">Medium</label>
+        <input
+          type="radio"
+          name=""
+          id="medium"
+          value="medium"
+          checked={difficultyLevel === "medium"}
+          onChange={handleDifficultyLevel}
+        />
+
+        <label htmlFor="hard">Hard</label>
+        <input
+          type="radio"
+          name=""
+          id="hard"
+          value="hard"
+          checked={difficultyLevel === "hard"}
+          onChange={handleDifficultyLevel}
+        />
+      </div>
+
       {/* Mode: Timed | Passage */}
       <div>
+        <p>Mode:</p>
         <label htmlFor="timed">Timed(60s)</label>
         <input
           type="radio"
