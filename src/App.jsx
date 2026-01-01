@@ -1,8 +1,11 @@
 import { useRef, useState } from "react";
+import { formatTime } from "./utils/formatTime";
+import { useStopwatch } from "./hooks/useStopwatch";
 
 function App() {
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [mode, setMode] = useState("timed");
+  const { elapsedSeconds, start } = useStopwatch();
   const intervalRef = useRef(null);
 
   const startCountDown = () => {
@@ -47,8 +50,10 @@ function App() {
           onChange={handleModeChange}
         />
       </div>
+
+      <p>{mode === "timed" ? secondsLeft : formatTime(elapsedSeconds)}</p>
+
       <button onClick={startCountDown}>Start Typing Test</button>
-      <p>{secondsLeft}</p>
     </div>
   );
 }
