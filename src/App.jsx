@@ -1,15 +1,25 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { formatTime } from "./utils/formatTime";
 import { useStopwatch } from "./hooks/useStopwatch";
 import { Passage } from "./components/Passage";
 import passages from "./data.json";
+import { getRandomIndex } from "./utils/getRandomIndex";
 
 function App() {
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [mode, setMode] = useState("timed");
   const [difficultyLevel, setDifficultyLevel] = useState("easy");
+  const [currentPassage, setCurrentPassage] = useState(null);
+
   const { elapsedSeconds, start } = useStopwatch();
   const intervalRef = useRef(null);
+
+  useEffect(() => {
+    const list = passages[difficultyLevel];
+    const randomIndex = getRandomIndex(list.length);
+
+    setCurrentPassage(list[randomIndex]);
+  }, [difficultyLevel]);
 
   const startCountDown = () => {
     if (intervalRef.current) return;
@@ -37,7 +47,8 @@ function App() {
   return (
     <div>
       {/* Display passage */}
-      <Passage passages={passages} difficultyLevel={difficultyLevel} />
+      <Passage passage={currentPassage} />
+
       {/* Difficulty level switch */}
       <div>
         <p>Difficulty:</p>

@@ -1,3 +1,3 @@
-export function getRandomIndex() {
-  return Math.floor(Math.random() * 10);
+export function getRandomIndex(max) {
+  return Math.floor(Math.random() * max);
 }
