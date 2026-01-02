@@ -11,7 +11,6 @@ function App() {
   const [difficultyLevel, setDifficultyLevel] = useState("easy");
   const [currentPassage, setCurrentPassage] = useState(null);
   const [isTestStarted, setIsTestStarted] = useState(false);
-  const [key, setKey] = useState("");
 
   const { elapsedSeconds, start } = useStopwatch();
   const intervalRef = useRef(null);
@@ -24,29 +23,34 @@ function App() {
   }, [difficultyLevel]);
 
   const startTest = () => {
+    if (isTestStarted) return;
+
     setIsTestStarted(true);
 
-    if (intervalRef.current) return;
-
-    intervalRef.current = setInterval(() => {
-      setSecondsLeft((prev) => {
-        if (prev === 0) {
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    if (mode === "timed") {
+      intervalRef.current = setInterval(() => {
+        setSecondsLeft((prev) => {
+          if (prev === 0) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else {
+      // start stopwatch
+      start();
+    }
   };
 
   useEffect(() => {
-    const startTyping = (event) => startTest();
+    const handleKeyDown = () => startTest();
 
-    window.addEventListener("keydown", startTyping);
+    window.addEventListener("keydown", handleKeyDown);
 
-    return () => window.removeEventListener("keydown", startTyping);
-  }, []);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isTestStarted, mode]);
 
   const handleModeChange = (event) => {
     setMode(event.target.value);
@@ -61,14 +65,8 @@ function App() {
     startTest();
   };
 
-  const handleKeyDown = (event) => {
-    setKey(event.key);
-  };
-
   return (
     <div>
-      <input type="text" name="" id="" onKeyDown={handleKeyDown} />
-      <p>{key}</p>
       <div
         style={{
           border: "1px solid red",
