@@ -11,6 +11,8 @@ function App() {
   const [difficultyLevel, setDifficultyLevel] = useState("easy");
   const [currentPassage, setCurrentPassage] = useState(null);
   const [isTestStarted, setIsTestStarted] = useState(false);
+  const [typedText, setTypedText] = useState("");
+  const inputRef = useRef(null);
 
   const { elapsedSeconds, start } = useStopwatch();
   const intervalRef = useRef(null);
@@ -45,7 +47,10 @@ function App() {
   };
 
   useEffect(() => {
-    const handleKeyDown = () => startTest();
+    const handleKeyDown = () => {
+      inputRef.current?.focus();
+      startTest();
+    };
 
     window.addEventListener("keydown", handleKeyDown);
 
@@ -62,7 +67,12 @@ function App() {
 
   const handleClickOnPassage = () => {
     setIsTestStarted(true);
+    inputRef.current?.focus();
     startTest();
+  };
+
+  const handleTyping = (e) => {
+    setTypedText(e.target.value);
   };
 
   return (
@@ -78,6 +88,21 @@ function App() {
           onPassageClick={handleClickOnPassage}
         />
       </div>
+
+      <input
+        ref={inputRef}
+        type="text"
+        value={typedText}
+        onChange={handleTyping}
+        autoComplete="off"
+        spellCheck={false}
+        style={{
+          position: "absolute",
+          opacity: 0,
+          pointerEvents: "none",
+        }}
+      />
+      <p>{typedText}</p>
 
       {/* Difficulty level switch */}
       <div>
@@ -135,7 +160,16 @@ function App() {
         />
       </div>
       <p>{mode === "timed" ? secondsLeft : formatTime(elapsedSeconds)}</p>
-      {!isTestStarted && <button onClick={startTest}>Start Typing Test</button>}
+      {!isTestStarted && (
+        <button
+          onClick={() => {
+            inputRef.current?.focus();
+            startTest();
+          }}
+        >
+          Start Typing Test
+        </button>
+      )}
     </div>
   );
 }
