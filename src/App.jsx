@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import { formatTime } from "./utils/formatTime";
 import { useStopwatch } from "./hooks/useStopwatch";
+import { Passage } from "./components/Passage";
+import passages from "./data.json";
 
 function App() {
   const [secondsLeft, setSecondsLeft] = useState(60);
@@ -34,6 +36,8 @@ function App() {
 
   return (
     <div>
+      {/* Display passage */}
+      <Passage passages={passages} difficultyLevel={difficultyLevel} />
       {/* Difficulty level switch */}
       <div>
         <p>Difficulty:</p>
