@@ -10,6 +10,7 @@ function App() {
   const [mode, setMode] = useState("timed");
   const [difficultyLevel, setDifficultyLevel] = useState("easy");
   const [currentPassage, setCurrentPassage] = useState(null);
+  const [isTestStarted, setIsTestStarted] = useState(false);
 
   const { elapsedSeconds, start } = useStopwatch();
   const intervalRef = useRef(null);
@@ -21,7 +22,9 @@ function App() {
     setCurrentPassage(list[randomIndex]);
   }, [difficultyLevel]);
 
-  const startCountDown = () => {
+  const startTest = () => {
+    setIsTestStarted(true);
+
     if (intervalRef.current) return;
 
     intervalRef.current = setInterval(() => {
@@ -46,8 +49,14 @@ function App() {
 
   return (
     <div>
-      {/* Display passage */}
-      <Passage passage={currentPassage} />
+      <div
+        style={{
+          border: "1px solid red",
+          opacity: `${isTestStarted ? "1" : "20%"}`,
+        }}
+      >
+        <Passage passage={currentPassage} />
+      </div>
 
       {/* Difficulty level switch */}
       <div>
@@ -82,7 +91,6 @@ function App() {
           onChange={handleDifficultyLevel}
         />
       </div>
-
       {/* Mode: Timed | Passage */}
       <div>
         <p>Mode:</p>
@@ -105,10 +113,8 @@ function App() {
           onChange={handleModeChange}
         />
       </div>
-
       <p>{mode === "timed" ? secondsLeft : formatTime(elapsedSeconds)}</p>
-
-      <button onClick={startCountDown}>Start Typing Test</button>
+      {!isTestStarted && <button onClick={startTest}>Start Typing Test</button>}
     </div>
   );
 }
