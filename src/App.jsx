@@ -47,6 +47,11 @@ function App() {
     setDifficultyLevel(event.target.value);
   };
 
+  const handleClickOnPassage = () => {
+    setIsTestStarted(true);
+    startTest();
+  };
+
   return (
     <div>
       <div
@@ -55,7 +60,10 @@ function App() {
           opacity: `${isTestStarted ? "1" : "20%"}`,
         }}
       >
-        <Passage passage={currentPassage} />
+        <Passage
+          passage={currentPassage}
+          onPassageClick={handleClickOnPassage}
+        />
       </div>
 
       {/* Difficulty level switch */}

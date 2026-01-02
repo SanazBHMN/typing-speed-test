@@ -1,3 +1,3 @@
-export const Passage = ({ passage }) => {
-  return <p>{passage?.text}</p>;
+export const Passage = ({ passage, onPassageClick }) => {
+  return <p onClick={onPassageClick}>{passage?.text}</p>;
 };
