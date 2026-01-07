@@ -4,6 +4,7 @@ import { useStopwatch } from "./hooks/useStopwatch";
 import { Passage } from "./components/Passage";
 import passages from "./data.json";
 import { getRandomIndex } from "./utils/getRandomIndex";
+import { Header } from "./components/Header";
 
 function App() {
   const [secondsLeft, setSecondsLeft] = useState(60);
@@ -76,7 +77,8 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="p-4 md:p-8 pb-0">
+      <Header bestResult={92} />
       <div
         style={{
           border: "1px solid red",
