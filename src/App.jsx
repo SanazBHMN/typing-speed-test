@@ -6,6 +6,7 @@ import passages from "./data.json";
 import { getRandomIndex } from "./utils/getRandomIndex";
 import { Header } from "./components/Header";
 import { Controls } from "./components/Controls";
+import { Dropdown } from "./components/Dropdown";
 
 function App() {
   const [secondsLeft, setSecondsLeft] = useState(60);
@@ -80,9 +81,12 @@ function App() {
   return (
     <div className="p-4 md:p-8 pb-0">
       <Header bestResult={92} />
-      <Controls
-        mode={mode === "timed" ? secondsLeft : formatTime(elapsedSeconds)}
-      />
+      <div>
+        <Controls
+          mode={mode === "timed" ? secondsLeft : formatTime(elapsedSeconds)}
+        />
+        <Dropdown />
+      </div>
       <div
         style={{
           border: "1px solid red",
